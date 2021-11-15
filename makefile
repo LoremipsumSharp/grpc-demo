@@ -17,5 +17,4 @@ push-image:build-image
 	docker push $(IMAGE_NAME):$(RELEASE_VERSION)
 
 test:
-	 echo $(CURRENT_VERSION)
-	 echo $(RELEASE_VERSION)
+	 grpcurl -plaintext -d '{"name":"hello"}' localhost:61018 greeter.GreeterBlocking/SayHello

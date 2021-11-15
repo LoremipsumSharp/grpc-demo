@@ -1,6 +1,6 @@
 package io.loremipsum.grpc.demo.configuration;
 
-import io.loremipsum.grpc.demo.util.AddressUtil;
+import io.loremipsum.grpc.demo.util.NetworkUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.net.SocketException;
@@ -16,7 +16,7 @@ public class ConsulRegistrationProperties {
     public String getAddress()  {
         if (StringUtils.isBlank(this.address) || StringUtils.isEmpty(this.address)) {
             try {
-                this.address = AddressUtil.getLocalIp();
+                this.address = NetworkUtils.getLocalIp();
             } catch (SocketException e) {
                 e.printStackTrace();
             } catch (UnknownHostException e) {

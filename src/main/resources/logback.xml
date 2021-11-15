@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <appender name="ConsoleLog"
+              class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>
+                %black(%d{ISO8601}) %highlight(%-5level) [%blue(%t)] %yellow(%C{1.}): %msg%n%throwable
+            </Pattern>
+        </layout>
+        <!-- todo:add filter to remove unnecessary log -->
+    </appender>
+
+
+
+    <appender name="BusinessLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>logs/business.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>./logs/business-%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>7</maxHistory>
+        </rollingPolicy>
+
+        <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+            <providers>
+                <pattern>
+                    <pattern>
+                        {
+                        "time":"%date{\"yyyy-MM-dd HH:mm:ss.SSS\"}",
+                        "level":"%level",
+                        "logger":"%logger",
+                        "msg":"%msg",
+                        "exception": "%exception{5}"
+                        }
+                    </pattern>
+                </pattern>
+            </providers>
+        </encoder>
+    </appender>
+
+
+    <appender name="AccessLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>logs/access.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>./logs/access-%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>7</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>%msg%n</pattern>
+        </encoder>
+    </appender>
+    <!-- use async for performance improvement  -->
+    <appender name="AccessLogAsync" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="AccessLog"/>
+    </appender>
+
+    <appender name="BusinessLogAsync" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="BusinessLog"/>
+    </appender>
+    <!--  class full name start with io.loremipsum.grpc.dem would be logged by  BusinessLogAsync -->
+    <logger name="io.loremipsum.grpc.demo"  level="INFO" additivity="false">
+        <appender-ref ref="BusinessLogAsync"/>
+    </logger>
+
+    <logger name="accesslog" level="INFO" additivity="false">
+        <appender-ref ref="AccessLogAsync"/>
+    </logger>
+
+    <root level="INFO">
+        <appender-ref ref="ConsoleLog"/>
+    </root>
+
+</configuration>

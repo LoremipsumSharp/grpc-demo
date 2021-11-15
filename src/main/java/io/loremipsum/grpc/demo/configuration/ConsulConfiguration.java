@@ -3,18 +3,14 @@ package io.loremipsum.grpc.demo.configuration;
 
 import com.google.common.net.HostAndPort;
 import com.orbitz.consul.Consul;
-import io.loremipsum.grpc.demo.infastructure.ConsulNameResolverProvider;
-import io.loremipsum.grpc.demo.util.AddressUtil;
+import io.loremipsum.grpc.demo.infastructure.discovery.ConsulNameResolverProvider;
 import net.devh.boot.grpc.server.config.GrpcServerProperties;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import javax.annotation.PostConstruct;
-import java.net.SocketException;
-import java.net.UnknownHostException;
 
 @Configuration
 @EnableConfigurationProperties(value = ConsulProperties.class)

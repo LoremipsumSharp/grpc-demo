@@ -1,4 +1,4 @@
-package io.loremipsum.grpc.demo.infastructure;
+package io.loremipsum.grpc.demo.infastructure.discovery;
 
 import java.net.URI;
 import java.util.Optional;
